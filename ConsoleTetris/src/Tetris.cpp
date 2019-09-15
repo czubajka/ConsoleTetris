@@ -1,4 +1,8 @@
 #include <iostream>
+#include <windows.h>
+
+constexpr int screenWidth { 120 };
+constexpr int screenHeight { 40 };
 
 std::wstring tetromino[7];
 constexpr int fieldWidth { 12 };
@@ -21,6 +25,16 @@ int Rotate(int px, int py, int rotation)
 
 int main()
 {
+	// create screen buffer
+	const wchar_t *screen = new wchar_t[screenWidth * screenHeight];
+	HANDLE hConsole = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+	SetConsoleActiveScreenBuffer(hConsole);
+	DWORD dwBytesWritten = 0;
+
+	// display frame
+	WriteConsoleOutputCharacter(hConsole, screen, screenWidth * screenHeight, { 0,0 }, &dwBytesWritten);
+
+
 	//create assets
 	tetromino[0].append(L"..X.");
 	tetromino[0].append(L"..X.");
